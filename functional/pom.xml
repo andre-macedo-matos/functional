@@ -111,6 +111,14 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- SELENIUM -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>
