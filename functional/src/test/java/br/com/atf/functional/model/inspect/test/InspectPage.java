@@ -23,14 +23,17 @@ public class InspectPage {
 		List<NavigationElement> elements = portal.getElements();
 		
 		int actualAttributesQuantity = elements.size();
-		assertEquals(2, actualAttributesQuantity);
+		assertEquals(3, actualAttributesQuantity);
 		
 		for (NavigationElement element : elements) {
 			Map<String, String> actualAttributes = element.getAttributes();
 			
-			boolean doesContainsValues = actualAttributes.containsValue("text") || actualAttributes.containsValue("password");
+			boolean doesContainsTags = element.getTagName().equals("input") || element.getTagName().equals("button");
+			boolean doesContainsKeys = actualAttributes.containsKey("type");
+			boolean doesContainsValues = actualAttributes.containsValue("text") || actualAttributes.containsValue("password") || actualAttributes.containsValue("submit");
 			
-			assertTrue(actualAttributes.containsKey("type"));
+			assertTrue(doesContainsTags);
+			assertTrue(doesContainsKeys);
 			assertTrue(doesContainsValues);
 		}
 	}

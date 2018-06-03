@@ -41,7 +41,7 @@ public class Portal {
 		WebDriver driver = getDriverProperty();
 		driver.get(this.url);
 
-		List<WebElement> elements = driver.findElements(By.xpath("//form/input"));
+		List<WebElement> elements = driver.findElements(By.xpath("//form/input|//form/button"));
 
 		this.elements = new ArrayList<>();
 		for (WebElement element : elements) {
