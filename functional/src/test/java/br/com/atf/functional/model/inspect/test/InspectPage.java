@@ -1,7 +1,6 @@
 package br.com.atf.functional.model.inspect.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
@@ -38,8 +37,15 @@ public class InspectPage {
 	}
 	
 	@Test
-	public void whenGivenAnInvalidUrlReturnErrorMessage() {
+	public void whenGivenAnInvalidUrlReturnEmptyListOfElements() {
 		Portal portal = new Portal("http://localhost:8080/livaria");
+		portal.inspectElements();
+		assertEquals(Collections.emptyList(), portal.getNavigationElements());
+	}
+	
+	@Test
+	public void whenGivenAUrlWithoutHTTPReturnEmptyListOfElements() {
+		Portal portal = new Portal("localhost:8080/livraria");
 		portal.inspectElements();
 		assertEquals(Collections.emptyList(), portal.getNavigationElements());
 	}
