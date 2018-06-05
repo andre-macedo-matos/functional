@@ -44,10 +44,9 @@ public class InspectPage {
 	}
 	
 	@Test
-	public void whenGivenAUrlWithoutHTTPReturnEmptyListOfElements() {
+	public void whenGivenAnUrlWithoutHTTPReturnEmptyListOfElements() {
 		Portal portal = new Portal("localhost:8080/livraria");
 		portal.inspectElements();
 		assertEquals(Collections.emptyList(), portal.getNavigationElements());
 	}
-
 }
