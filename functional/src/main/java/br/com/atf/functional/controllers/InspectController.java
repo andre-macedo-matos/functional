@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.atf.functional.exception.NotReachablePageException;
+import br.com.atf.functional.exception.RedirectPageException;
 import br.com.atf.functional.model.NavigationElement;
 import br.com.atf.functional.model.Portal;
 import br.com.caelum.vraptor.Controller;
@@ -38,11 +39,16 @@ public class InspectController {
 	public void inspect(Portal portal) {
 		try {
 			portal.inspectElements();
+			
 		} catch (NotReachablePageException e) {
 			result.include("feedback",
 					"Não foi possível acessar " + portal.getUrl() + ". Por favor, verifique o endereço novamente.");
 			e.printStackTrace();
+			
+		} catch (RedirectPageException e) {
+			e.printStackTrace();
 		}
+		
 		List<NavigationElement> elements = portal.getNavigationElements();
 
 		result.include("elements", elements);

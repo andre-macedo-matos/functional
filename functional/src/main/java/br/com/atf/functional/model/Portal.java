@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import br.com.atf.functional.exception.NotReachablePageException;
+import br.com.atf.functional.exception.RedirectPageException;
 
 public class Portal {
 
@@ -37,17 +38,14 @@ public class Portal {
 		this.navigationElements = elements;
 	}
 
-	public void inspectElements() throws NotReachablePageException {
+	public void inspectElements() throws NotReachablePageException, RedirectPageException {
 		WebDriver driver = initDriver();
 
 		driver.get(this.url);
 		
-		String pageSource = driver.getPageSource();
-
-		if (isPageReachable(pageSource)) {
-			driver.quit();
-			throw new NotReachablePageException("A página da url [" + this.url + "] não foi encontrada.");
-		}
+		didPageRedirect(driver);
+		didPageLoad(driver);
+		
 		List<WebElement> elements = driver.findElements(By.xpath("//form/input|//form/button"));
 
 		this.navigationElements = new ArrayList<>();
@@ -61,6 +59,21 @@ public class Portal {
 		
 		driver.quit();
 
+	}
+
+	private void didPageLoad(WebDriver driver) throws NotReachablePageException {
+		String pageSource = driver.getPageSource();
+
+		if (isPageReachable(pageSource)) {
+			driver.quit();
+			throw new NotReachablePageException("A página da url [" + this.url + "] não foi encontrada.");
+		}
+	}
+
+	private void didPageRedirect(WebDriver driver) throws RedirectPageException {
+		if(!this.url.equals(driver.getCurrentUrl())) {
+			throw new RedirectPageException("A  página da url [" + this.url + "] foi redirecionada para [" + driver.getCurrentUrl() + "].");
+		}
 	}
 
 	private boolean isPageReachable(String pageSource) {
