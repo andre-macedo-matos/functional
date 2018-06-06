@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import br.com.atf.functional.exception.NotReachablePageException;
 import br.com.atf.functional.model.NavigationElement;
 import br.com.atf.functional.model.Portal;
 import br.com.caelum.vraptor.Controller;
@@ -15,7 +16,7 @@ import br.com.caelum.vraptor.Result;
 @Controller
 @Path("/inspecao")
 public class InspectController {
-	
+
 	private final Result result;
 
 	@Inject
@@ -23,7 +24,7 @@ public class InspectController {
 		super();
 		this.result = result;
 	}
-	
+
 	@Deprecated
 	public InspectController() {
 		this(null);
@@ -32,12 +33,18 @@ public class InspectController {
 	@Get("")
 	public void inspect() {
 	}
-	
+
 	@Post("")
 	public void inspect(Portal portal) {
-		portal.inspectElements();
+		try {
+			portal.inspectElements();
+		} catch (NotReachablePageException e) {
+			result.include("feedback",
+					"Não foi possível acessar " + portal.getUrl() + ". Por favor, verifique o endereço novamente.");
+			e.printStackTrace();
+		}
 		List<NavigationElement> elements = portal.getNavigationElements();
-		
+
 		result.include("elements", elements);
 		result.redirectTo(this).inspect();
 	}

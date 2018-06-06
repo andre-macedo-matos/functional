@@ -11,13 +11,17 @@
 	<p>
 		<a href="<c:url value='/inspecao'/>">Inspecão</a>
 	</p>
+	
+	<c:if test="${not empty feedback}">
+		<p>${feedback}</p>
+	</c:if>
 
 	<p>Informe URL do portal:</p>
 	<form action="<c:url value='/inspecao' />" method="post">
 		<input type="text" name="portal.url">
 		<button type="submit">Inspecionar</button>
 	</form>
-
+	
 	<c:if test="${not empty elements}">
 		<p>Foram encontrados os seguientes elementos de navegação:</p>
 
