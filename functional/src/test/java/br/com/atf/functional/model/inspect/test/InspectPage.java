@@ -3,20 +3,21 @@ package br.com.atf.functional.model.inspect.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.openqa.selenium.UnsupportedCommandException;
 
+import br.com.atf.functional.exception.NotReachablePageException;
 import br.com.atf.functional.model.NavigationElement;
 import br.com.atf.functional.model.Portal;
 
 public class InspectPage {
 	
 	@Test
-	public void whenGivenAValidUrlShouldReturnLoginForm() {		
-		Portal portal = new Portal("http://localhost:8080/livraria");
+	public void whenGivenAValidUrlShouldReturnLoginForm() throws NotReachablePageException {		
+		Portal portal = new Portal("http://localhost:999/livraria");
 		portal.inspectElements();
 		List<NavigationElement> elements = portal.getNavigationElements();
 		 
@@ -36,17 +37,16 @@ public class InspectPage {
 		}
 	}
 	
-	@Test
-	public void whenGivenAnInvalidUrlReturnEmptyListOfElements() {
-		Portal portal = new Portal("http://localhost:8080/livaria");
+	@Test(expected=NotReachablePageException.class)
+	public void whenGivenAnInvalidUrlReturnException() throws NotReachablePageException {
+		Portal portal = new Portal("http://localhost:999/livaria");
 		portal.inspectElements();
-		assertEquals(Collections.emptyList(), portal.getNavigationElements());
 	}
 	
-	@Test
-	public void whenGivenAnUrlWithoutHTTPReturnEmptyListOfElements() {
-		Portal portal = new Portal("localhost:8080/livraria");
+	@Test(expected=UnsupportedCommandException.class)
+	public void whenGivenAnEmptydUrlReturnException() throws NotReachablePageException {
+		Portal portal = new Portal("");
 		portal.inspectElements();
-		assertEquals(Collections.emptyList(), portal.getNavigationElements());
 	}
+	
 }
