@@ -3,6 +3,7 @@ package br.com.atf.functional.controllers;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 
 import br.com.atf.functional.exception.NotReachablePageException;
 import br.com.atf.functional.exception.RedirectPageException;
@@ -13,22 +14,24 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.validator.Validator;
 
 @Controller
 @Path("/inspecao")
 public class InspectController {
 
 	private final Result result;
+	private Validator validator;
 
 	@Inject
-	public InspectController(Result result) {
-		super();
+	public InspectController(Result result, Validator validator) {
 		this.result = result;
+		this.validator = validator;
 	}
 
 	@Deprecated
 	public InspectController() {
-		this(null);
+		this(null, null);
 	}
 
 	@Get("")
@@ -36,7 +39,10 @@ public class InspectController {
 	}
 
 	@Post("")
-	public void inspect(Portal portal) {
+	public void inspect(@Valid Portal portal) {
+		validator.onErrorForwardTo(this).inspect();
+		String url = portal.getUrl();
+		
 		try {
 			portal.inspectElements();
 			
@@ -46,6 +52,8 @@ public class InspectController {
 			e.printStackTrace();
 			
 		} catch (RedirectPageException e) {
+			result.include("confirm",
+					"O endereço " + url + " foi redirecionado para " + portal.getUrl()  + ". Gostaria de continuar?");
 			e.printStackTrace();
 		}
 		

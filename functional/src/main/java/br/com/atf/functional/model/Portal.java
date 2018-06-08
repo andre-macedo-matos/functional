@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -13,8 +17,11 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import br.com.atf.functional.exception.NotReachablePageException;
 import br.com.atf.functional.exception.RedirectPageException;
 
+@RequestScoped
+@Named("portal")
 public class Portal {
-
+	
+	@NotEmpty(message="{portal.url.vazia}")
 	private String url;
 	private List<NavigationElement> navigationElements;
 
