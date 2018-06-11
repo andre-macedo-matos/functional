@@ -29,7 +29,7 @@
 	</form>
 	
 	<c:if test="${not empty elements}">
-		<p>Foram encontrados os seguientes elementos de navegação:</p>
+		<p>Foram encontrados os seguintes elementos de navegação:</p>
 
 		<c:forEach items="${elements}" var="element">
 			<p> ${element.tagName } 
