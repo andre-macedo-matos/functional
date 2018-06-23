@@ -34,7 +34,8 @@ public class UrlValidator implements ConstraintValidator<Url, String> {
 
 		if (!url.equals(currentUrl)) {
 			hibernateContext.disableDefaultConstraintViolation();
-			hibernateContext.buildConstraintViolationWithTemplate("O endereço" + url + " redirecionou para " + currentUrl).addConstraintViolation();
+			hibernateContext.buildConstraintViolationWithTemplate("O endereço " + url + " redirecionou para " + currentUrl)
+				.addConstraintViolation();
 			return false;
 		}
 
