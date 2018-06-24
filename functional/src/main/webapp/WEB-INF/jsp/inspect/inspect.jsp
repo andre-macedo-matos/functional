@@ -12,10 +12,6 @@
 		<a href="${linkTo[InspectController].inspect}">Inspecão</a>
 	</p>
 	
-	<c:if test="${not empty feedback}">
-		<p>${feedback}</p>
-	</c:if>
-	
 	<c:if test="${not empty errors}">
 		<c:forEach items="${errors}" var="error">
 			<p>${error.message}</p>
@@ -41,11 +37,6 @@
 			</p>
 		</c:forEach>
 	</c:if>
-	
-	<c:if test="${not empty feedback}">
-		<p>${confirm}</p>
-	</c:if>
-
 
 </body>
 </html>
