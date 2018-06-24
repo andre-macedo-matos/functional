@@ -60,6 +60,33 @@ public class InspectPage {
 		assertEquals(1, quantityOfErrors);
 		assertEquals(expectedMessage, actualMessage);
 	}
+	
+	@Test
+	public void whenGivenEmptyUrlReturnErrorMessage() {
+		Portal portal = new Portal("");
+		Set<ConstraintViolation<Portal>> constraintViolations = validator.validate(portal);
+		
+		int quantityOfErrors = constraintViolations.size();
+		String actualMessage = constraintViolations.iterator().next().getMessage();
+		String expectedMessage = "Por favor, informe um endereço para realizar inspeção.";
+		
+		assertEquals(1, quantityOfErrors);
+		assertEquals(expectedMessage, actualMessage);
+	}
+	
+	@Test
+	public void whenGivenAnInvalidUrlReturnErrorMessage() {
+		String url = "http://localhost:999/livra";
+		Portal portal = new Portal(url);
+		Set<ConstraintViolation<Portal>> constraintViolations = this.validator.validate(portal);
+		
+		int quantityOfErrors = constraintViolations.size();
+		String actualMessage = constraintViolations.iterator().next().getMessage();
+		String expectedMessage = "Não foi possível acessar " + url + ". Por favor, verifique o endereço novamente.";
+		
+		assertEquals(1, quantityOfErrors);
+		assertEquals(expectedMessage, actualMessage);
+	}
 
 	@Test
 	public void whenGivenAValidUrlWhichIsRedirectReturnErrorMessage() {
