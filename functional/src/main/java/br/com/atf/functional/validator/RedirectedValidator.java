@@ -27,7 +27,7 @@ public class RedirectedValidator implements ConstraintValidator<Redirected, Stri
 		
 		if (!url.equals(currentUrl)) {
 			hibernateContext.disableDefaultConstraintViolation();
-			hibernateContext.buildConstraintViolationWithTemplate("O endereço " + url + " redirecionou para outro endereço " + currentUrl + ".")
+			hibernateContext.buildConstraintViolationWithTemplate("{portal.url.redirect} (" + currentUrl + ").")
 				.addConstraintViolation();
 			return false;
 		}
