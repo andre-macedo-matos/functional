@@ -6,20 +6,28 @@ import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
+import javax.validation.GroupSequence;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
-import br.com.atf.functional.annotation.Url;
+import br.com.atf.functional.annotation.NotFound;
+import br.com.atf.functional.annotation.Redirected;
+import br.com.atf.functional.group.HibernateGroup;
+import br.com.atf.functional.group.UrlGroup;
 
 @RequestScoped
 @Named("portal")
+@GroupSequence({Portal.class, HibernateGroup.class, UrlGroup.class})
 public class Portal {
-	
-	@Url
+
+	@NotFound(groups = UrlGroup.class)
+	@Redirected(groups = UrlGroup.class)
+	@NotEmpty(message = "{portal.url.empty}", groups = HibernateGroup.class)
 	private String url;
 	
 	public Portal(String url) {

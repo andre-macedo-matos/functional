@@ -95,7 +95,7 @@ public class InspectPage {
 		Set<ConstraintViolation<Portal>> constraintViolations = validator.validate(portal);
 		
 		int quantityOfErrors = constraintViolations.size();
-		String expected = "O endereço " + url + " redirecionou para " + url + "/login?1";
+		String expected = "O endereço " + url + " redirecionou para outro endereço " + url + "/login?1.";
 		String validatorMessage = constraintViolations.iterator().next().getMessage();
 		
 		assertEquals(1, quantityOfErrors);

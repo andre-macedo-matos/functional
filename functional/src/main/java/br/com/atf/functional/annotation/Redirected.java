@@ -7,20 +7,16 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import br.com.atf.functional.validator.RedirectedValidator;
 
-import br.com.atf.functional.validator.UrlValidator;
 
-@Target({ ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {UrlValidator.class})
-@ReportAsSingleViolation
-@NotEmpty
-public @interface Url {
+@Constraint(validatedBy = {RedirectedValidator.class})
+public @interface Redirected {
 	
-	String message() default "{portal.url.empty}";
+	String message() default "{portal.url.redirect}";
 
 	Class<?>[] groups() default {};
 

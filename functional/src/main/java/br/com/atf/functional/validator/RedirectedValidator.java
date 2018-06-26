@@ -7,52 +7,39 @@ import org.hibernate.validator.constraintvalidation.HibernateConstraintValidator
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
-import br.com.atf.functional.annotation.Url;
+import br.com.atf.functional.annotation.Redirected;
 
-public class UrlValidator implements ConstraintValidator<Url, String> {
+public class RedirectedValidator implements ConstraintValidator<Redirected, String> {
 
 	@Override
-	public void initialize(Url constraintAnnotation) {
+	public void initialize(Redirected constraintAnnotation) {
 	}
 
 	@Override
 	public boolean isValid(String url, ConstraintValidatorContext context) {
 		HibernateConstraintValidatorContext hibernateContext = context
 				.unwrap(HibernateConstraintValidatorContext.class);
-
+		
 		WebDriver driver = initDriver();
 		driver.get(url);
-		String pageSource = driver.getPageSource();
 		String currentUrl = driver.getCurrentUrl();
 		driver.quit();
-
-		if (isPageUnreachable(pageSource)) {
-			hibernateContext.disableDefaultConstraintViolation();
-			hibernateContext.buildConstraintViolationWithTemplate("{portal.url.unreachable}").addConstraintViolation();
-			return false;
-		}
-
+		
 		if (!url.equals(currentUrl)) {
 			hibernateContext.disableDefaultConstraintViolation();
-			hibernateContext.buildConstraintViolationWithTemplate("O endereço " + url + " redirecionou para " + currentUrl)
+			hibernateContext.buildConstraintViolationWithTemplate("O endereço " + url + " redirecionou para outro endereço " + currentUrl + ".")
 				.addConstraintViolation();
 			return false;
 		}
-
+		
 		return true;
 	}
-
-	private boolean isPageUnreachable(String pageSource) {
-		return pageSource.contains("404") 
-				|| pageSource.equals("<html><head></head><body></body></html>")
-				|| pageSource.contains("ERR_CONNECTION_REFUSED") 
-				|| pageSource.contains("INET_E_RESOURCE_NOT_FOUND");
-	}
-
+	
 	private WebDriver initDriver() {
 		String phatomJsDriver = System.getProperty("user.home") + "\\functional_config\\DRIVERS\\phantomjs.exe";
 		System.setProperty("phantomjs.binary.path", phatomJsDriver);
 		WebDriver driver = new PhantomJSDriver();
 		return driver;
 	}
+
 }
