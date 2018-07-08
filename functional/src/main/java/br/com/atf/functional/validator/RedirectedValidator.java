@@ -1,16 +1,18 @@
 package br.com.atf.functional.validator;
 
+import javax.inject.Inject;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import br.com.atf.functional.annotation.Redirected;
 
 public class RedirectedValidator implements ConstraintValidator<Redirected, String> {
-
+	
+	@Inject private WebDriver driver;
+	
 	@Override
 	public void initialize(Redirected constraintAnnotation) {
 	}
@@ -20,10 +22,8 @@ public class RedirectedValidator implements ConstraintValidator<Redirected, Stri
 		HibernateConstraintValidatorContext hibernateContext = context
 				.unwrap(HibernateConstraintValidatorContext.class);
 		
-		WebDriver driver = initDriver();
 		driver.get(url);
 		String currentUrl = driver.getCurrentUrl();
-		driver.quit();
 		
 		if (!url.equals(currentUrl)) {
 			hibernateContext.disableDefaultConstraintViolation();
@@ -35,11 +35,4 @@ public class RedirectedValidator implements ConstraintValidator<Redirected, Stri
 		return true;
 	}
 	
-	private WebDriver initDriver() {
-		String phatomJsDriver = System.getProperty("user.home") + "\\functional_config\\DRIVERS\\phantomjs.exe";
-		System.setProperty("phantomjs.binary.path", phatomJsDriver);
-		WebDriver driver = new PhantomJSDriver();
-		return driver;
-	}
-
 }

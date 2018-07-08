@@ -1,19 +1,9 @@
 package br.com.atf.functional.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 import javax.validation.GroupSequence;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import br.com.atf.functional.annotation.NotFound;
 import br.com.atf.functional.annotation.Redirected;
@@ -21,15 +11,14 @@ import br.com.atf.functional.group.HibernateGroup;
 import br.com.atf.functional.group.UrlGroup;
 
 @RequestScoped
-@Named("portal")
 @GroupSequence({Portal.class, HibernateGroup.class, UrlGroup.class})
 public class Portal {
-
+	
+	@NotEmpty(message = "{portal.url.empty}", groups = HibernateGroup.class)
 	@NotFound(groups = UrlGroup.class)
 	@Redirected(groups = UrlGroup.class)
-	@NotEmpty(message = "{portal.url.empty}", groups = HibernateGroup.class)
 	private String url;
-	
+
 	public Portal(String url) {
 		this.url = url;
 	}
@@ -37,52 +26,9 @@ public class Portal {
 	public String getUrl() {
 		return url;
 	}
-
+	
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	public List<NavigationElement> inspectElements() {
-		WebDriver driver = initDriver();
-		driver.get(this.url);
-		
-		List<WebElement> elements = driver.findElements(By.xpath("//form/input|//form/button"));
-
-		List<NavigationElement> navigationElements = new ArrayList<>();
-		for (WebElement element : elements) {
-			String tagName = element.getTagName();
-			Map<String, String> attributes = getAttributesOfElement(driver, element);
-
-			NavigationElement navigationElement = new NavigationElement(tagName, attributes);
-			navigationElements.add(navigationElement);
-		}
-
-		driver.quit();
-		
-		return navigationElements;
-	}
-
-	private Map<String, String> getAttributesOfElement(WebDriver driver, WebElement element) {
-		JavascriptExecutor executor = (JavascriptExecutor) driver;
-		String script = "var items = {}; " + "for (index = 0; index < arguments[0].attributes.length; ++index){"
-				+ "items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value " + "}"
-				+ "return items;";
-
-		@SuppressWarnings("unchecked")
-		Map<String, String> attributes = ((Map<String, String>) executor.executeScript(script, element));
-		return attributes;
-	}
-
-	private WebDriver initDriver() {
-		String phatomJsDriver = System.getProperty("user.home") + "\\functional_config\\DRIVERS\\phantomjs.exe";
-		System.setProperty("phantomjs.binary.path", phatomJsDriver);
-
-		String edgeDriver = System.getProperty("user.home") + "\\src\\main\\resources\\DRIVERS\\MicrosoftWebDriver.exe";
-		System.setProperty("webdriver.edge.driver", edgeDriver);
-
-		String chromeDriver = System.getProperty("user.home") + "\\functional_config\\DRIVERS\\chromedriver.exe";
-		System.setProperty("webdriver.chrome.driver", chromeDriver);
-
-		return new PhantomJSDriver();
-	}
 }
