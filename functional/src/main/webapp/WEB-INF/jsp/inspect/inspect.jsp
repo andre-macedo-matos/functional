@@ -6,15 +6,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="jquery/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="angularjs/angular.min.js"></script>
+
+<script src="resources/js/module/modalApp.js"></script>
+<script src="resources/js/controller/modalController.js"></script>
 
 <title>Inspeção</title>
 </head>
-<body ng-app="modalApp" ng-controller="MainCtrl" >
+<body ng-app="modalApp" ng-controller="modalController" >
 	<p>
 		<a href="${linkTo[InspectController].inspect}">Inspecão</a>
 	</p>
@@ -32,7 +35,7 @@
 	<p>Informe URL do portal:</p>
 	<form action="<c:url value='/inspecao' />" method="post">
 		<input type="text" name="portal.url">
-		<button type="submit">Inspecionar</button>
+		<button type="submit" class="btn btn-default">Inspecionar</button>
 	</form><br>
 	
 	<c:if test="${not empty elements}">
@@ -51,71 +54,23 @@
 
 	
 	<div class="container">
-	    
-	  <modal title="Redirecionamento" visible="showModal">
-	  	<c:if test="${not empty redirected}">
-			<p>${errorMessage}</p>
-		</c:if>
+		<modal title="Redirecionamento" visible="showModal" data-backdrop="static" data-keyboard="false">
+		  	<c:if test="${not empty redirected}">
+				<p>${errorMessage}</p>
+			</c:if>
 	  	<p>Deseja continuar?</p>
-	    <form action="<c:url value='/inspecao' />" method="post">
-			<input type="hidden" name="portal.url" value="${redirected}">
-		  	<button type="submit" class="btn btn-default">Sim</button>
-		</form>
-	    <button type="button" class="btn btn-default" onclick="location.href='<c:url value='/inspecao'/>'">Não</button>
+
+	    <footer>
+			    <form action="<c:url value='/inspecao' />" method="post">
+					<input type="hidden" name="portal.url" value="${redirected}">
+				  	<button type="submit" class="btn btn-default">Sim</button>
+				</form>
+				
+			  	<button type="button" class="btn btn-default" onclick="location.href='<c:url value='/inspecao'/>'">Não</button>
+	    </footer>
+
 	  </modal>
 	</div>
-
-<script>
-var modalApp = angular.module('modalApp', []);
-
-modalApp.controller('MainCtrl', function ($scope) {
-    $scope.toggleModal = function(){
-        $scope.showModal = true;
-    };
-  });
-
-modalApp.directive('modal', function () {
-    return {
-      template: '<div class="modal fade">' + 
-          '<div class="modal-dialog">' + 
-            '<div class="modal-content">' + 
-              '<div class="modal-header">' + 
-                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + 
-                '<h4 class="modal-title">{{ title }}</h4>' + 
-              '</div>' + 
-              '<div class="modal-body" ng-transclude></div>' + 
-            '</div>' + 
-          '</div>' + 
-        '</div>',
-      restrict: 'E',
-      transclude: true,
-      replace:true,
-      scope:true,
-      link: function postLink(scope, element, attrs) {
-        scope.title = attrs.title;
-
-        scope.$watch(attrs.visible, function(value){
-          if(value == true)
-            $(element).modal('show');
-          else
-            $(element).modal('hide');
-        });
-
-        $(element).on('shown.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = true;
-          });
-        });
-
-        $(element).on('hidden.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = false;
-          });
-        });
-      }
-    };
-  });
-</script>
 
 </body>
 </html>

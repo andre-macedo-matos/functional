@@ -2,7 +2,7 @@ var modalApp = angular.module('modalApp', []);
 
 modalApp.directive('modal', function () {
     return {
-      templateUrl: "resources/template/modal.html",
+      templateUrl: 'resources/template/modal.html',
       restrict: 'E',
       transclude: true,
       replace:true,
@@ -33,4 +33,14 @@ modalApp.directive('modal', function () {
       }
     };
     
- });
+ })
+	 .directive('footer', function() {
+		 return {
+			 require: '^^modal',
+			 templateUrl: 'resources/template/modal-footer.html',
+			 restrict: 'E',
+			 transclude: true
+		 };
+	});
+;
+	 
