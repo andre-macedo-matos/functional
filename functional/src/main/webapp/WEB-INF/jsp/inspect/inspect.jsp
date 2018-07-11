@@ -15,42 +15,51 @@
 <script src="resources/js/module/modalApp.js"></script>
 <script src="resources/js/controller/modalController.js"></script>
 
+<style type="text/css">
+	.row {
+    	height: 100vh;
+	}
+</style>
+
 <title>Inspeção</title>
 </head>
 <body ng-app="modalApp" ng-controller="modalController">
 	<div class="row">
-		<div class="col-1">
-			<h4>Menu</h4>
-			<hr>
-			
-			<p>
-				<a href="${linkTo[InspectController].inspect}">Inspecão</a>
-			</p>
+		<div class="col-1 bg-primary h-100">
+				<nav class="navbar navbar-dark justify-content-center" >
+					<h4 class="navbar-brand">Menu</h4>
+				  		<div class="navbar-nav">
+							<a class="nav-link" href="${linkTo[InspectController].inspect}">Inspecão</a>
+						</div>
+				</nav>
 		</div>
 
 		<div class="col-6">
 			<h1>Inspeção de Telas</h1>
+			
 			<c:if test="${not empty errors}">
 				<c:forEach items="${errors}" var="error">
-					<p>${error.message}</p>
+					<div class="alert alert-danger" role="alert">
+						<p>${error.message}</p>
+					</div>
 				</c:forEach>
 			</c:if>
 
 			<p>Informe URL do portal:</p>
-			<form action="<c:url value='/inspecao' />" method="post">
-				<input type="text" name="portal.url">
-				<button type="submit" class="btn btn-default">Inspecionar</button>
+			<form class="form-inline" action="<c:url value='/inspecao' />" method="post">
+				<input class="form-control mr-sm-2" type="text" name="portal.url">
+				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit" >Inspecionar</button>
 			</form>
 			<br>
 
 			<c:if test="${not empty elements}">
 				<h3>Foram encontrados os seguintes elementos de navegação:</h3>
 
-				<table>
-					<thead>
+				<table class="table table-bordered table-hover table-sm">
+					<thead class="thead-light">
 						<tr>
-							<th>Componente</th>
-							<th>Atributos</th>
+							<th scope="col">Componente</th>
+							<th scope="col">Atributos</th>
 						</tr>
 					</thead>
 
@@ -73,24 +82,24 @@
 		</div>
 	</div>
 	
-	<c:if test="${not empty redirected}">
+	<c:if test="${not empty redirectedUrl}">
 		{{toggleModal()}}
 	</c:if>
 	
 	<div class="container">
 		<modal title="Redirecionamento" visible="showModal" data-backdrop="static" data-keyboard="false"> 
-			<c:if test="${not empty redirected}">
-				<p>${errorMessage}</p>
+			<c:if test="${not empty redirectedUrl}">
+				<p>${errors[0].message}</p>
 			</c:if>
 			<p>Deseja continuar?</p>
 
 			<footer>
-			<form action="<c:url value='/inspecao' />" method="post">
-				<input type="hidden" name="portal.url" value="${redirected}">
-				<button type="submit" class="btn btn-default">Sim</button>
-			</form>
-	
-			<button type="button" class="btn btn-default" onclick="location.href='<c:url value='/inspecao'/>'">Não</button>
+				<form action="<c:url value='/inspecao' />" method="post">
+					<input type="hidden" name="portal.url" value="${redirectedUrl}">
+					<button type="submit" class="btn btn-outline-primary">Sim</button>
+				</form>
+		
+				<button type="button" class="btn btn-outline-secondary" onclick="location.href='<c:url value='/inspecao'/>'">Não</button>
 			</footer> 
 		</modal>
 	</div>

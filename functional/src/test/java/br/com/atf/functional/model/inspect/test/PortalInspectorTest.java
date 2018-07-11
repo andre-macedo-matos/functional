@@ -37,13 +37,16 @@ public class PortalInspectorTest {
 		return jar;
 	}
 
-	@Inject private PortalInspector inspector;
+	@Inject
+	private PortalInspector inspector;
 
-	@Inject private Validator validator;
+	@Inject
+	private Validator validator;
 
 	@Test
 	public void whenGivenAValidUrlShouldReturnLoginForm() {
-		List<NavigationElement> elements = inspector.inspectForElements(new Portal("http://localhost:999/livraria/login?0"));
+		List<NavigationElement> elements = inspector
+				.inspectForElements(new Portal("http://localhost:999/livraria/login?0"));
 
 		int actualAttributesQuantity = elements.size();
 		assertEquals(3, actualAttributesQuantity);
@@ -63,46 +66,44 @@ public class PortalInspectorTest {
 	}
 
 	@Test
-	 public void whenNotGivenUrlReturnErrorMessage() {
-	 Portal portal = new Portal(null);
-	 Set<ConstraintViolation<Portal>> constraintViolations =
-	 validator.validate(portal);
-	
-	 int quantityOfErrors = constraintViolations.size();
-	 String actualMessage = constraintViolations.iterator().next().getMessage();
-	 String expectedMessage = "Por favor, informe um endereço para realizar inspeção.";
-	
-	 assertEquals(1, quantityOfErrors);
-	 assertEquals(expectedMessage, actualMessage);
-	 }
+	public void whenNotGivenUrlReturnErrorMessage() {
+		Portal portal = new Portal(null);
+		Set<ConstraintViolation<Portal>> constraintViolations = validator.validate(portal);
+
+		int quantityOfErrors = constraintViolations.size();
+		String actualMessage = constraintViolations.iterator().next().getMessage();
+		String expectedMessage = "Por favor, informe um endereço para realizar inspeção.";
+
+		assertEquals(1, quantityOfErrors);
+		assertEquals(expectedMessage, actualMessage);
+	}
 
 	@Test
-	 public void whenGivenEmptyUrlReturnErrorMessage() {
-	 Portal portal = new Portal("");
-	 Set<ConstraintViolation<Portal>> constraintViolations =
-	 validator.validate(portal);
-	
-	 int quantityOfErrors = constraintViolations.size();
-	 String actualMessage = constraintViolations.iterator().next().getMessage();
-	 String expectedMessage = "Por favor, informe um endereço para realizar inspeção.";
-	
-	 assertEquals(1, quantityOfErrors);
-	 assertEquals(expectedMessage, actualMessage);
-	 }
+	public void whenGivenEmptyUrlReturnErrorMessage() {
+		Portal portal = new Portal("");
+		Set<ConstraintViolation<Portal>> constraintViolations = validator.validate(portal);
+
+		int quantityOfErrors = constraintViolations.size();
+		String actualMessage = constraintViolations.iterator().next().getMessage();
+		String expectedMessage = "Por favor, informe um endereço para realizar inspeção.";
+
+		assertEquals(1, quantityOfErrors);
+		assertEquals(expectedMessage, actualMessage);
+	}
 
 	@Test
-	 public void whenGivenAnInvalidUrlReturnErrorMessage() {
-	 String url = "http://localhost:999/livra";
-	 Portal portal = new Portal(url);
-	 Set<ConstraintViolation<Portal>> constraintViolations = validator.validate(portal);
-	
-	 int quantityOfErrors = constraintViolations.size();
-	 String actualMessage = constraintViolations.iterator().next().getMessage();
-	 String expectedMessage = "Não foi possível acessar " + url + ". Por favor, verifique o endereço novamente.";
-	
-	 assertEquals(1, quantityOfErrors);
-	 assertEquals(expectedMessage, actualMessage);
-	 }
+	public void whenGivenAnInvalidUrlReturnErrorMessage() {
+		String url = "http://localhost:999/livra";
+		Portal portal = new Portal(url);
+		Set<ConstraintViolation<Portal>> constraintViolations = validator.validate(portal);
+
+		int quantityOfErrors = constraintViolations.size();
+		String actualMessage = constraintViolations.iterator().next().getMessage();
+		String expectedMessage = "Não foi possível acessar " + url + ". Por favor, verifique o endereço novamente.";
+
+		assertEquals(1, quantityOfErrors);
+		assertEquals(expectedMessage, actualMessage);
+	}
 
 	@Test
 	public void whenGivenAValidUrlWhichIsRedirectReturnErrorMessage() {
