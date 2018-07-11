@@ -8,15 +8,16 @@ import org.hibernate.validator.constraints.NotEmpty;
 import br.com.atf.functional.annotation.NotFound;
 import br.com.atf.functional.annotation.Redirected;
 import br.com.atf.functional.group.HibernateGroup;
-import br.com.atf.functional.group.UrlGroup;
+import br.com.atf.functional.group.NotFoundGroup;
+import br.com.atf.functional.group.RedirectedGroup;
 
 @RequestScoped
-@GroupSequence({Portal.class, HibernateGroup.class, UrlGroup.class})
+@GroupSequence({Portal.class, HibernateGroup.class, NotFoundGroup.class, RedirectedGroup.class})
 public class Portal {
 	
 	@NotEmpty(message = "{portal.url.empty}", groups = HibernateGroup.class)
-	@NotFound(groups = UrlGroup.class)
-	@Redirected(groups = UrlGroup.class)
+	@NotFound(groups = NotFoundGroup.class)
+	@Redirected(groups = RedirectedGroup.class)
 	private String url;
 
 	public Portal(String url) {
