@@ -13,11 +13,13 @@ import br.com.caelum.vraptor.environment.Environment;
 @RequestScoped
 public class WebDriverFactory {
 	
-	@Inject private Environment environment;
+	@Inject
+	private Environment environment;
 	
 	@Produces
 	public WebDriver initDriver() {
-		System.setProperty("phantomjs.binary.path", environment.getResource("/test/drivers/phantomjsdriver.exe").getPath());
+		String phantomJSDriverPath = environment.getResource("/development/drivers/phantomjsdriver.exe").getPath();
+		System.setProperty("phantomjs.binary.path", phantomJSDriverPath );
 		return new PhantomJSDriver();
 	}
 	

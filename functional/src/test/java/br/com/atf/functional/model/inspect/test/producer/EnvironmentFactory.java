@@ -14,7 +14,4 @@ public class EnvironmentFactory {
 	public Environment environmentFactory() throws IOException {
 		return new DefaultEnvironment(EnvironmentType.TEST);
 	}
-	
-	
-
 }
