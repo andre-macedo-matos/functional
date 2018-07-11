@@ -7,29 +7,32 @@ import javax.validation.Valid;
 
 import br.com.atf.functional.model.NavigationElement;
 import br.com.atf.functional.model.Portal;
+import br.com.atf.functional.service.PortalInspector;
+import br.com.atf.functional.validator.PortalValidator;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.validator.Validator;
 
 @Controller
 @Path("/inspecao")
 public class InspectController {
 
 	private Result result;
-	private Validator validator;
-
+	private PortalValidator validator;
+	private PortalInspector inspector;
+	
 	@Inject
-	public InspectController(Result result, Validator validator) {
+	public InspectController(Result result, PortalValidator validator, PortalInspector inspector) {
 		this.result = result;
 		this.validator = validator;
+		this.inspector = inspector;
 	}
 
 	@Deprecated
 	public InspectController() {
-		this(null, null);
+		this(null, null, null);
 	}
 
 	@Get("")
@@ -37,10 +40,11 @@ public class InspectController {
 	}
 
 	@Post("")
-	public void inspect(@Valid Portal portal) {
+	public void inspect(Portal portal) {
+		validator.validate(portal);
 		validator.onErrorRedirectTo(this).inspect();
 		
-		List<NavigationElement> elements = portal.inspectElements();
+		List<NavigationElement> elements = inspector.inspectForElements(portal);
 
 		result.include("elements", elements);
 		result.redirectTo(this).inspect();
