@@ -17,7 +17,7 @@ public class WebDriverFactory {
 	
 	@Produces
 	public WebDriver initDriver() {
-		System.setProperty("phantomjs.binary.path", environment.get("phantomjs.binary.path"));
+		System.setProperty("phantomjs.binary.path", environment.getResource("/test/drivers/phantomjsdriver.exe").getPath());
 		return new PhantomJSDriver();
 	}
 	
