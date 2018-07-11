@@ -1,4 +1,4 @@
-package br.com.atf.functional.controllers;
+package br.com.atf.functional.controller;
 
 import javax.inject.Inject;
 

@@ -1,9 +1,8 @@
-package br.com.atf.functional.controllers;
+package br.com.atf.functional.controller;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 
 import br.com.atf.functional.model.NavigationElement;
 import br.com.atf.functional.model.Portal;
