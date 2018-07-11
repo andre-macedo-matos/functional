@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import br.com.atf.functional.model.NavigationElement;
 import br.com.atf.functional.model.Portal;
 import br.com.atf.functional.service.PortalInspector;
+import br.com.caelum.vraptor.environment.Environment;
 
 @RunWith(Arquillian.class)
 public class PortalInspectorTest {
@@ -32,7 +33,9 @@ public class PortalInspectorTest {
 				.addPackage("br.com.atf.functional.model")
 				.addPackage("br.com.atf.functional.producer")
 				.addPackage("br.com.atf.functional.service")
+				.addPackage("br.com.atf.functional.model.inspect.test.producer")
 				.addClass(Validator.class)
+				.addClass(Environment.class)
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 		return jar;
 	}

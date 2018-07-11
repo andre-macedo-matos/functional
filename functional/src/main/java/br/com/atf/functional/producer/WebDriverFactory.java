@@ -3,17 +3,21 @@ package br.com.atf.functional.producer;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
+import br.com.caelum.vraptor.environment.Environment;
+
 @RequestScoped
 public class WebDriverFactory {
 	
+	@Inject private Environment environment;
+	
 	@Produces
 	public WebDriver initDriver() {
-		String phatomJSDriver = System.getProperty("user.home") + "\\functional_config\\DRIVERS\\phantomjs.exe";
-		System.setProperty("phantomjs.binary.path", phatomJSDriver);
+		System.setProperty("phantomjs.binary.path", environment.get("phantomjs.binary.path"));
 		return new PhantomJSDriver();
 	}
 	
