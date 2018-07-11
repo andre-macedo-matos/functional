@@ -8,11 +8,11 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import br.com.atf.functional.validator.NotFoundValidator;
+import br.com.atf.functional.constraint.NotFoundConstraint;
 
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {NotFoundValidator.class})
+@Constraint(validatedBy = {NotFoundConstraint.class})
 public @interface NotFound {
 	
 	String message() default "{portal.url.notfound}";

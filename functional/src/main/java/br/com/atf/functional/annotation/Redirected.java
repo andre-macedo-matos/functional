@@ -8,12 +8,11 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import br.com.atf.functional.validator.RedirectedValidator;
-
+import br.com.atf.functional.constraint.RedirectedConstraint;
 
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {RedirectedValidator.class})
+@Constraint(validatedBy = {RedirectedConstraint.class})
 public @interface Redirected {
 	
 	String message() default "{portal.url.redirect}";

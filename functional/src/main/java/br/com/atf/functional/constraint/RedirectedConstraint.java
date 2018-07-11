@@ -1,4 +1,4 @@
-package br.com.atf.functional.validator;
+package br.com.atf.functional.constraint;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintValidator;
@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 
 import br.com.atf.functional.annotation.Redirected;
 
-public class RedirectedValidator implements ConstraintValidator<Redirected, String> {
+public class RedirectedConstraint implements ConstraintValidator<Redirected, String> {
 	
 	@Inject private WebDriver driver;
 	

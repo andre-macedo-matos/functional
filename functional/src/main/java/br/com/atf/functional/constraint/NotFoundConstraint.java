@@ -1,4 +1,4 @@
-package br.com.atf.functional.validator;
+package br.com.atf.functional.constraint;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintValidator;
@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 
 import br.com.atf.functional.annotation.NotFound;
 
-public class NotFoundValidator implements ConstraintValidator<NotFound, String>{
+public class NotFoundConstraint implements ConstraintValidator<NotFound, String>{
 	
 	@Inject private WebDriver driver;
 
