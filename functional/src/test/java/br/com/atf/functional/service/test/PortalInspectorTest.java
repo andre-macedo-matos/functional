@@ -1,4 +1,4 @@
-package br.com.atf.functional.model.inspect.test;
+package br.com.atf.functional.service.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

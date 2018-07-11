@@ -1,4 +1,4 @@
-package br.com.atf.functional.model.inspect.test.producer;
+package br.com.atf.functional.test.utils.producer;
 
 import java.io.IOException;
 
