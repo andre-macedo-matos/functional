@@ -33,7 +33,7 @@ public class PortalInspectorTest {
 				.addPackage("br.com.atf.functional.model")
 				.addPackage("br.com.atf.functional.producer")
 				.addPackage("br.com.atf.functional.service")
-				.addPackage("br.com.atf.functional.model.inspect.test.producer")
+				.addPackage("br.com.atf.functional.test.utils.producer")
 				.addClass(Validator.class)
 				.addClass(Environment.class)
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -48,8 +48,8 @@ public class PortalInspectorTest {
 
 	@Test
 	public void whenGivenAValidUrlShouldReturnLoginForm() {
-		List<NavigationElement> elements = inspector
-				.inspectForElements(new Portal("http://localhost:999/livraria/login?0"));
+		String url = "http://localhost:999/livraria/login?0";
+		List<NavigationElement> elements = inspector.inspectForElements(new Portal(url));
 
 		int actualAttributesQuantity = elements.size();
 		assertEquals(3, actualAttributesQuantity);
